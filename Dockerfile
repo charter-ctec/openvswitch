@@ -29,9 +29,12 @@ RUN set -eux; \
     curl -sSL http://openvswitch.org/releases/openvswitch-${OVS_VERSION}.tar.gz | tar xz -C /tmp/openvswitch --strip-components=1; \
     curl -sSL http://fast.dpdk.org/rel/dpdk-${DPDK_VERSION}.tar.xz | tar xJ -C /tmp/dpdk --strip-components=1; \
     cd /tmp/dpdk; \
-    make install T=x86_64-native-linuxapp-gcc DESTDIR=install; \
+    make config T=x86_64-native-linuxapp-gcc DESTDIR=install RTE_KERNELDIR=/lib/modules/*/build; \
+    sed -i -e '/^CONFIG_RTE_LIBRTE_VHOST/c\CONFIG_RTE_LIBRTE_VHOST=y' -e '/^CONFIG_RTE_LIBRTE_KNI/c\CONFIG_RTE_LIBRTE_KNI=n' build/.config; \
+    make install; \
     cd /tmp/openvswitch; \
-    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g -O2 -march=native" --with-dpdk=/tmp/dpdk/install --with-linux=/lib/modules/*/build; \
+    ./boot.sh; \
+    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-O2" --with-dpdk=/tmp/dpdk/install --with-linux=/lib/modules/*/build; \
     make; \
     make install; \
     cd /; \
@@ -42,7 +45,7 @@ RUN set -eux; \
         libnuma-dev \
         libpcap-dev \
         libssl-dev \
-        linux-headers-generic-hwe-16.04-edge \
+        linux-headers-generic \
         openssl \
         python-six \
         ; \
