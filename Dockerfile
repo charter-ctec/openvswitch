@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM debian:jessie-slim
 
 SHELL ["/bin/bash", "-c"]
 
@@ -12,6 +12,7 @@ RUN set -eux; \
     apt-get install --no-install-recommends -y \
         build-essential \
         curl \
+        file \
         iproute2 \
         libcap-ng0 \
         libcap-ng-dev \
@@ -21,7 +22,7 @@ RUN set -eux; \
         libpcap-dev \
         libssl1.0.0 \
         libssl-dev \
-        linux-headers-generic \
+        linux-headers-amd64 \
         openssl \
         python-six \
         ; \
@@ -29,23 +30,24 @@ RUN set -eux; \
     curl -sSL http://openvswitch.org/releases/openvswitch-${OVS_VERSION}.tar.gz | tar xz -C /tmp/openvswitch --strip-components=1; \
     curl -sSL http://fast.dpdk.org/rel/dpdk-${DPDK_VERSION}.tar.xz | tar xJ -C /tmp/dpdk --strip-components=1; \
     cd /tmp/dpdk; \
-    make config T=x86_64-native-linuxapp-gcc DESTDIR=install RTE_KERNELDIR=/lib/modules/*/build; \
-    sed -i -e '/^CONFIG_RTE_LIBRTE_VHOST/c\CONFIG_RTE_LIBRTE_VHOST=y' -e '/^CONFIG_RTE_LIBRTE_KNI/c\CONFIG_RTE_LIBRTE_KNI=n' build/.config; \
-    make install; \
+    sed -i -e '/^CONFIG_RTE_LIBRTE_VHOST/c\CONFIG_RTE_LIBRTE_VHOST=y' -e '/^CONFIG_RTE_LIBRTE_KNI/c\CONFIG_RTE_LIBRTE_KNI=n' config/common_linuxapp; \
+    make config T=x86_64-native-linuxapp-gcc; \
+    make RTE_KERNELDIR=/lib/modules/*/build; \
+    make install prefix=/usr; \
     cd /tmp/openvswitch; \
-    ./boot.sh; \
-    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-O2" --with-dpdk=/tmp/dpdk/install --with-linux=/lib/modules/*/build; \
+    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-O2" --with-dpdk=/tmp/dpdk/build --with-linux=/lib/modules/*/build; \
     make; \
     make install; \
     cd /; \
-    apt-get purge --autoremove -y \
+    apt-get purge --auto-remove -y \
         build-essential \
         curl \
+        file \
         libcap-ng-dev \
         libnuma-dev \
         libpcap-dev \
         libssl-dev \
-        linux-headers-generic \
+        linux-headers-amd64 \
         openssl \
         python-six \
         ; \
