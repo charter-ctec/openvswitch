@@ -12,6 +12,7 @@ RUN set -eux; \
     apt-get install --no-install-recommends -y \
         build-essential \
         curl \
+        iproute2 \
         libcap-ng0 \
         libcap-ng-dev \
         libnuma1 \
