@@ -20,7 +20,7 @@ RUN set -eux; \
         libpcap-dev \
         libssl1.0.0 \
         libssl-dev \
-        linux-headers-generic-hwe-16.04-edge \
+        linux-headers-generic \
         openssl \
         python-six \
         ; \
@@ -30,7 +30,7 @@ RUN set -eux; \
     cd /tmp/dpdk; \
     make install T=x86_64-native-linuxapp-gcc DESTDIR=install; \
     cd /tmp/openvswitch; \
-    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g -O2 -march=native" --with-dpdk=/tmp/dpdk/install; \
+    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g -O2 -march=native" --with-dpdk=/tmp/dpdk/install --with-linux=/lib/modules/*/build; \
     make; \
     make install; \
     cd /; \
