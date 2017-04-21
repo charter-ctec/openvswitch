@@ -6,8 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     OVS_VERSION=2.7.0 \
     DPDK_VERSION=17.02
 
-ADD sources.list /etc/apt/sources.list
-
 RUN set -eux; \
     apt-get update; \
     apt-get dist-upgrade -y; \
