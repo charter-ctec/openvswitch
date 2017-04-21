@@ -30,8 +30,11 @@ RUN set -eux; \
     curl -sSL http://openvswitch.org/releases/openvswitch-${OVS_VERSION}.tar.gz | tar xz -C /tmp/openvswitch --strip-components=1; \
     curl -sSL http://fast.dpdk.org/rel/dpdk-${DPDK_VERSION}.tar.xz | tar xJ -C /tmp/dpdk --strip-components=1; \
     cd /tmp/dpdk; \
-    sed -i -e '/^CONFIG_RTE_LIBRTE_VHOST/c\CONFIG_RTE_LIBRTE_VHOST=y' -e '/^CONFIG_RTE_LIBRTE_KNI/c\CONFIG_RTE_LIBRTE_KNI=n' config/common_linuxapp; \
     make config T=x86_64-native-linuxapp-gcc; \
+    sed -i -e '/^CONFIG_RTE_EAL_IGB_UIO/c\CONFIG_RTE_EAL_IGB_UIO=n' \
+           -e '/^CONFIG_RTE_LIBRTE_KNI/c\CONFIG_RTE_LIBRTE_KNI=n' \
+           -e '/^CONFIG_RTE_LIBRTE_VHOST/c\CONFIG_RTE_LIBRTE_VHOST=y' \
+        build/.config; \
     make RTE_KERNELDIR=/lib/modules/*/build; \
     make install prefix=/usr; \
     cd /tmp/openvswitch; \
