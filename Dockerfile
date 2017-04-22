@@ -24,6 +24,7 @@ RUN set -eux; \
         libssl-dev \
         linux-headers-amd64 \
         openssl \
+        python \
         python-six \
         ; \
     mkdir /tmp/openvswitch /tmp/dpdk; \
@@ -37,6 +38,10 @@ RUN set -eux; \
         build/.config; \
     make RTE_KERNELDIR=/lib/modules/*/build; \
     make install prefix=/usr; \
+    for script in dpdk-{devbind,pmdinfo} cpu_layout; do \
+        ln -s /usr/share/dpdk/usertools/${script}.py /bin/${script}; \
+        ln -s /usr/share/dpdk/usertools/${script}.py /bin/${script}.py; \
+    done; \
     cd /tmp/openvswitch; \
     ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-O2" --with-dpdk=/tmp/dpdk/build --with-linux=/lib/modules/*/build; \
     make; \
