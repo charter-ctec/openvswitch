@@ -14,6 +14,7 @@ RUN set -eux; \
         curl \
         file \
         iproute2 \
+        libatomic1 \
         libcap-ng0 \
         libcap-ng-dev \
         libnuma1 \
