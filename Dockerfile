@@ -24,6 +24,7 @@ RUN set -eux; \
         libssl-dev \
         linux-headers-amd64 \
         openssl \
+        pciutils \
         python \
         python-six \
         ; \
@@ -59,4 +60,5 @@ RUN set -eux; \
         openssl \
         python-six \
         ; \
+    apt-get purge --auto-remove --purge -y; \
     rm -rf /tmp/* /var/lib/apt/lists/*
