@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive \
     OVS_VERSION=2.7.0 \
-    DPDK_VERSION=17.02
+    DPDK_VERSION=16.11
 
 RUN set -eux; \
     apt-get update; \
