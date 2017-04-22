@@ -64,6 +64,4 @@ RUN set -eux; \
     apt-get purge --auto-remove --purge -y; \
     rm -rf /tmp/* /var/lib/apt/lists/*
 
-COPY entrypoint.sh /entrypoint.sh
-
-ENTRYPOINT /entrypoint.sh
+COPY init.sh /bin/ovs-db-init
