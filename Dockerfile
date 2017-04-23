@@ -14,7 +14,6 @@ RUN set -eux; \
         libatomic1 \
         libssl1.0.0 \
         openssl \
-        python-six \
         uuid-runtime \
         graphviz \
         autoconf \
@@ -25,6 +24,7 @@ RUN set -eux; \
         libssl-dev \
         libtool \
         python-all \
+        python-six \
         python-twisted-conch \
         python-zopeinterface \
         ; \
@@ -49,6 +49,7 @@ RUN set -eux; \
         libssl-dev \
         libtool \
         python-all \
+        python-six \
         python-twisted-conch \
         python-zopeinterface \
         ; \
