@@ -35,7 +35,8 @@ RUN set -eux; \
     ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc; \
     make; \
     # Test 2323: mcast is broken in DockerHub builds
-    make check TESTSUITEFLAGS='-j8 1-2322'; \
+    # Some tests fail intermittently in DockerHub; RECHECK
+    make check TESTSUITEFLAGS='1-2322' RECHECK=yes; \
     make install; \
     cd /; \
     apt-get purge --auto-remove -y \
