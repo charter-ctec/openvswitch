@@ -34,7 +34,7 @@ RUN set -eux; \
     ./boot.sh; \
     ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc; \
     make; \
-    make check; \
+    make check TESTSUITEFLAGS=-j8; \
     make install; \
     cd /; \
     apt-get purge --auto-remove -y \
