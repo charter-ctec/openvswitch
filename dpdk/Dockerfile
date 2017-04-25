@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive \
     OVS_VERSION=2.7.0 \
-    DPDK_VERSION=16.11
+    DPDK_VERSION=17.02
 
 RUN set -eux; \
     apt-get update; \
@@ -36,7 +36,6 @@ RUN set -eux; \
     make config T=x86_64-native-linuxapp-gcc; \
     sed -i -e '/^CONFIG_RTE_EAL_IGB_UIO/c\CONFIG_RTE_EAL_IGB_UIO=n' \
            -e '/^CONFIG_RTE_LIBRTE_KNI/c\CONFIG_RTE_LIBRTE_KNI=n' \
-           -e '/^CONFIG_RTE_LIBRTE_VHOST/c\CONFIG_RTE_LIBRTE_VHOST=y' \
         build/.config; \
     make RTE_KERNELDIR=/lib/modules/*/build; \
     make install prefix=/usr; \
@@ -45,7 +44,7 @@ RUN set -eux; \
         ln -s /usr/share/dpdk/usertools/${script}.py /bin/${script}.py; \
     done; \
     cd /tmp/openvswitch; \
-    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-O2" --with-dpdk=/tmp/dpdk/build --with-linux=/lib/modules/*/build; \
+    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc --with-dpdk=/tmp/dpdk/build --with-linux=/lib/modules/*/build; \
     make; \
     make install; \
     cd /; \
