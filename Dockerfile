@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:strech-slim
 
 SHELL ["/bin/bash", "-c"]
 
